@@ -1,0 +1,70 @@
+supl (1.0.6) unstable; urgency=low
+
+  * Fixed BUG#3427808 again...
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 27 Oct 2011 21:55:00 -0400
+
+supl (1.0.5) unstable; urgency=low
+
+  * Fixed BUG#3427808, symlinks is asn1-tarballs
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 22 Oct 2011 22:45:00 -0400
+
+supl (1.0.4) unstable; urgency=low
+
+  * Fixed failing to decode too long messages
+  * Added proper scaling factors for --format human
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 22 Oct 2011 22:45:00 -0400
+
+supl (1.0.3) unstable; urgency=low
+
+  * Update precompiled asn1c files using asn1c version 0.9.23
+  * Fix README to reflect these changes, fix few other bugs there too
+  * Add asn1 and supl debugging configuration options to configure
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 20 Oct 2011 22:15:00 -0400
+
+supl (1.0.2) unstable; urgency=low
+
+  * Bug#3425862 Fixes command line option parsing bug
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 19 Oct 2011 18:02:00 -0400
+
+supl (1.0.1) unstable; urgency=low
+
+  * Fixes reading ephemeris for all satellites
+  * Add -a flag to request almanac data from the server
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 17 Oct 2011 22:41:00 -0400
+
+supl (1.0) unstable; urgency=low
+
+  * Fixes multiple build issues, warnings, etc.
+  * Uses now plain Makefiles instead of autotools.
+  * Got rid of cert utilities and combined them into supl-cert.
+  * Manual pages added.
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 28 Mar 2011 16:54:00 -0400
+
+supl (0.9.2) unstable; urgency=low
+
+  * Uses slpSessionID if given by the supl server.
+  * Uses wcdma and gsm cell info.
+  * Fixed few bugs all round.
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Wed, 2 Mar 2011 16:02:00 -0400
+
+supl (0.9.1) unstable; urgency=low
+
+  * Added almanac and acquisition assistance support.
+  * Fixed few build errors.
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Mon, 1 Oct 2007 22:02:00 -0400
+
+supl (0.9) unstable; urgency=low
+
+  * First semi-public release.
+
+ -- Tatu Mannisto <tatu -at- tajuma -dot- com>  Sun, 30 Sep 2007 14:15:00 -0400
+

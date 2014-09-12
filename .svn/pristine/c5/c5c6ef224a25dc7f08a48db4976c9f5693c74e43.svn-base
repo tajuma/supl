@@ -1,0 +1,114 @@
+.\"EMACS: -*- nroff -*-
+
+.TH SUPL-CLIENT 1 "version 1.0"
+.SH NAME
+supl-client \- client to get GPS assistance data from SUPL server
+.SH SYNOPISIS
+.B supl-client
+[OPTIONS...] \fIsupl-server\fP
+.br
+.SH DESCRIPTION
+\fBsupl-client\fP connects over the Internet to the SUPL
+\fIsupl-server\fP (default supl.nokia.com) TCP/IP port 7275 and sends
+SUPL/RRLP request over the Internet to get GPS assistance data, such
+as almanac and ephemeris.
+.SH OPTIONS
+.TP
+.B \-\-cell=gsm:\fIMMC\fP,\fIMNS\fP,\fILAC\fP,\fIci\FP
+Client position estimate based on GSM cellular tower identification.
+.TP
+.B \-\-cell=wcdma:\fIMMC\fP,\fIMNS\fP,\fIUC\FP
+Client position estimate based on WCDMA cellular tower identification.
+.TP
+.B \-\-cell=gsm:\fIMMC\fP,\fIMNS\fP,\fILAC\fP,\fIci\fP:\fIlat\fP,\fIlon\fP,\fIuncertainty\fP
+Client position estimate based on GSM cellular tower identification
+with position update of the tower.
+.TP
+.B \-\-format human
+Output format for the received GPS assistance data. Format argument
+\fIhuman\fP specifies somewhat more human parseable output format. The
+default format more suitable for machines.
+.TP
+.B \-t 0|1|2|3
+These options allows to test client by using some sane defaults. Most
+likely the output is not useful as the location given the SUPL server
+does not agree your current location.
+.SH EXAMPLES
+
+.nf
+supl-client --cell=gsm:244,5:0x59e2,0x31b0:60.169995,24.939995,127
+supl-client --cell=gsm:244,5:0x59e2,0x31b0
+supl-client -t 3 --format human
+.fi
+.SH OUTPUT FORMAT
+The default output format consists of lines prefixed with a letter
+indicating the type of the line followed by space separated
+values. For the meaning of most of the parameters see GPS documentation.
+
+\fBT\fP Reference time
+.br
+.B T gps_week gps_tow timestamp_sec timestamp_usec
+
+\fBU\fP UTC time
+.br
+.B U a0 a1 delta_tls tot wnt wnlsf dn delta_tlsf
+
+\fBL\fP Reference location 
+.br
+.B L lat lon uncertainty
+.br
+Position estimate (lat,lon) and position uncertainty of the client
+given by the SUPL server.
+
+\fBI\fP Ionospheric model
+.br
+.B I a0 a1 a2 b0 b1 b2 b3
+
+\fBE\fP Epemeris date per satellite
+.br
+.B E prn delta_n M0 A_sqrt OMEGA_0 i0 w OMEGA_dot i_dot e 
+.B   Cuc Cus Crc Crs Cic Cis toe IODC toc AF0 AF1 AF2
+.B   bits ura health tgd AODA
+.br
+The ephemeris line is repeated for every GPS satellite.
+
+\fBA\fP Almanac data
+.br
+.B A prn e toa Ksii OMEGA_dot A_sqrt OMEGA_0 w M0 AF0 AF1
+.br
+The almanac line is repeated for every GPS satellite.
+
+.SH NOTES
+Some SUPL servers may be very picky if given the position estimate of
+the cell tower and may simply not give any output. Just try with it.
+
+Cellular cell paramaters can be found from a cellular phone with the
+following AT-commands
+
+.nf
+at+cops?
++COPS: 0,2,"24405",2
+OK
+at+creg=2
+OK
+at+creg?
++CREG: 2,1,"59E2","31B0"
+OK
+at+creg=0
+OK
+.fi
+
+Here the needed values for \fIcell\fP option are then:
+
+.nf
+MCC = 244
+MCN = 05
+LAC = 0x59e2
+CI = 0x31b0
+.fi
+.SH BUGS
+Please send any comments or bug reports to \fBtatu -at- tajuma.com\fP.
+.SH HOMEPAGE
+http://www.tajuma.com/supl
+.SH AUTHOR
+Tatu Männistö <tatu -at- tajuma.com>
