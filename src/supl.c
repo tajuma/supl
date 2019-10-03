@@ -317,7 +317,7 @@ static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu) {
   ulp->message.present = UlpMessage_PR_msSUPLSTART;
   ulp->message.choice.msSUPLSTART.sETCapabilities.posTechnology.agpsSETBased = 1;
   // (void)asn_long2INTEGER(&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_noPreference);
-  (void)asn_long2INTEGER(&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  (void)asn_long2INTEGER((INTEGER_t*)&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
   ulp->message.choice.msSUPLSTART.sETCapabilities.posProtocol.rrlp = 1;
 
   if (ctx->p.set & PARAM_GSM_CELL_CURRENT) {
@@ -335,7 +335,7 @@ static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu) {
     ulp->message.choice.msSUPLSTART.locationId.cellInfo.choice.wcdmaCell.refUC = ctx->p.wcdma.uc;
   }
 
-  (void)asn_long2INTEGER(&ulp->message.choice.msSUPLSTART.locationId.status, Status_current);
+  (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLSTART.locationId.status, Status_current);
 
   ulp->message.choice.msSUPLSTART.qoP = OPTIONAL_MISSING;
 
@@ -399,7 +399,7 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
   ulp->message.present = UlpMessage_PR_msSUPLPOSINIT;
   ulp->message.choice.msSUPLPOSINIT.sETCapabilities.posTechnology.agpsSETBased = 1;
   // (void)asn_long2INTEGER(&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_noPreference);
-  (void)asn_long2INTEGER(&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
   ulp->message.choice.msSUPLPOSINIT.sETCapabilities.posProtocol.rrlp = 1;
 
   req_adata->acquisitionAssistanceRequested = 0; // 1
@@ -432,19 +432,19 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
     struct tm *tm;
     time_t t;
 
-    (void)asn_long2INTEGER(&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_stale);
+    (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_stale);
 
     t = time(0);
     tm = gmtime(&t);
     asn_UT2time(&pos->timestamp, tm ,1);
-    (void)asn_long2INTEGER(&pos->positionEstimate.latitudeSign, latitudeSign_north);
+    (void)asn_long2INTEGER((INTEGER_t *)&pos->positionEstimate.latitudeSign, latitudeSign_north);
     pos->positionEstimate.latitude = (1 << 23) / 90.0 * ctx->p.known.lat;
     pos->positionEstimate.longitude = (1 << 24) / 360.0 * ctx->p.known.lon;
     // TODO: set position estimate
 
     ulp->message.choice.msSUPLPOSINIT.position = pos;
   } else {
-    (void)asn_long2INTEGER(&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_current);
+    (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_current);
     ulp->message.choice.msSUPLPOSINIT.position = OPTIONAL_MISSING;
   }
 

@@ -47,14 +47,13 @@ static int ssl_accept(int port, supl_ctx_t *client_ctx) {
   SSL*     ssl;
   X509*    client_cert;
   char*    str;
-  SSL_METHOD *meth;
   
   /* SSL preliminaries. We keep the certificate and key with the context. */
 
   SSL_load_error_strings();
   SSLeay_add_ssl_algorithms();
   // meth = TLSv1_server_method();
-  meth = SSLv23_server_method();
+  const SSL_METHOD *meth = SSLv23_server_method();
   ctx = SSL_CTX_new (meth);
   if (!ctx) {
     return 0;

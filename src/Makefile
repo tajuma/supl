@@ -24,7 +24,7 @@ supl-client: libsupl.so supl-client.o
 	$(CC) -o $@ supl-client.o -L. -lsupl -lssl -lm
 
 supl-proxy: libsupl.so supl-proxy.o
-	$(CC) -o $@ supl-proxy.o -L. -lsupl -lssl -lm
+	$(CC) -o $@ supl-proxy.o -L. -lsupl -lssl -lcrypto -lm
 
 supl-cert: supl-cert.o
 	$(CC) -o $@ supl-cert.o $(shell pkg-config --libs openssl) -lm

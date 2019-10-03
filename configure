@@ -7,7 +7,7 @@ usage() {
 $0 [options...]
   --prefix=DIR		prefix install directory for binaries and libraries
 			[/usr/local]
-  --precomplied-asn1	use precompiled ASN.1 files (no asn1c compiler needed)
+  --precompiled-asn1	use precompiled ASN.1 files (no asn1c compiler needed)
   --enable-supl-debug	enable SUPL/RRLP protocol specific debugging
   --enable-debug	enable C debugging
   --enable-asn1-debug	enable debugging of ASN.1 parsing
