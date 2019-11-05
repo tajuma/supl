@@ -30,7 +30,7 @@ Options:
 Example:
 supl-client --cell=gsm:244,5:0x59e2,0x31b0:60.169995,24.939995,127 --cell=gsm:244,5:0x59e2,0x31b0
 
-The default SUPL server is supl.nokia.com.
+The default SUPL server is supl.google.com.
 
 Supl server may not return all assistance information if --gsm-cell
 is not given. You can give some cell id to supl server but position
