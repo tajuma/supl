@@ -402,14 +402,14 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
   (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
   ulp->message.choice.msSUPLPOSINIT.sETCapabilities.posProtocol.rrlp = 1;
 
-  req_adata->acquisitionAssistanceRequested = 0; // 1
-  req_adata->navigationModelRequested = 0; // 1
+  req_adata->acquisitionAssistanceRequested = 1; // 0
+  req_adata->navigationModelRequested = 1; // 0
   req_adata->referenceTimeRequested = 1;
-  req_adata->utcModelRequested = 0; //1
-  req_adata->ionosphericModelRequested = 0; // 1
+  req_adata->utcModelRequested = 1; // 0
+  req_adata->ionosphericModelRequested = 1; // 0
   req_adata->referenceLocationRequested = 1;
   req_adata->almanacRequested = ctx->p.request & SUPL_REQUEST_ALMANAC;
-  req_adata->realTimeIntegrityRequested = 0; // 1
+  req_adata->realTimeIntegrityRequested = 1; // 0
   ulp->message.choice.msSUPLPOSINIT.requestedAssistData = req_adata;
 
   if (ctx->p.set & PARAM_GSM_CELL_CURRENT) {
