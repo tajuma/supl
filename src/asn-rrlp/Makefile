@@ -516,7 +516,7 @@ endif
 all: $(ASN1)
 	$(MAKE) libs
 
-libs: CFLAGS += $(CONF_ASN_CFLAGS) -I. -fPIC -D_DEFAULT_SOURCE
+libs: CFLAGS += $(CONF_ASN_CFLAGS) -I. -fPIC -D_DEFAULT_SOURCE -Wno-format
 
 libs: libasnrrlp.a libasnrrlp.so
 

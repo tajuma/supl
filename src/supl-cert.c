@@ -27,8 +27,6 @@ int main(int argc, char *argv[])
 	}
 	domain = argv[1];
 
-	CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
-
 	bio_err=BIO_new_fp(stderr, BIO_NOCLOSE);
 
 	mkit_ca(&x509,&pkey,1024,42,365);
@@ -114,7 +112,6 @@ int main(int argc, char *argv[])
 	X509V3_EXT_cleanup();
 	OBJ_cleanup();
 
-	CRYPTO_mem_leaks(bio_err);
 	BIO_free(bio_err);
 	return(0);
 	}
