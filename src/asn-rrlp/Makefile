@@ -536,6 +536,7 @@ asn1.stamp: $(ASN1_SOURCE)
 
 asn1-precompiled.stamp:
 	tar xzf asn1c-files.tgz
+	sed -i -e 's/^int asn_debug_indent;/extern &/' asn_internal.h
 	touch asn1-precompiled.stamp
 
 asn1c-files.tgz:
