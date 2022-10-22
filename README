@@ -16,7 +16,7 @@ and supporting SUPL/RRLP library libsupl.
 supl-client connect to a SUPL server over the Internet and gets GPS
 assistance (A-GPS) data, like satellite ephemeris and almanac data
 from it. The received data can then be fed to a GPS receiver (assuming
-the receiver accepts such data) to speed up satellite aquistion.
+the receiver accepts such data) to speed up satellite acquistion.
 
 Usage:
 supl-client options [supl-server]
@@ -42,8 +42,8 @@ overridden by --set-pos in the output. Format for this is
 where both lat and lon are decimal degrees (N and E positive) and
 uncertainty in meters.
 
-Also if enviroment variable SUPL_FAKE_POS it is used as the
-position esitmate coming from the supl server. Format is the same
+Also if environment variable SUPL_FAKE_POS it is used as the
+position estimate coming from the supl server. Format is the same
 as in --set-pos.
 
 With test options '-t 0', '-t 1' or '-t 2' you  get a quick feeling
@@ -56,12 +56,12 @@ Usage:
 supl-proxy supl-server
 
 Sets up a proxy and displays SUPL / RRLP traffic between the client
-and server. Convinient for debugging and figuring out the protocol.
+and server. Convenient for debugging and figuring out the protocol.
 
 To use it, you must direct your mobile to use your proxy server as its
 SUPL server. In Nokia N95 this is in Tool -> Settings -> General ->
-Positioning -> Postioning server. In Nokia N900 such setting is also
-availabe in the settings application.
+Positioning -> Positioning server. In Nokia N900 such setting is also
+available in the settings application.
 
 You must also install a SSL root certificate to the phone. The root
 certificate must be set as trusted certificate in the phone. In N95
@@ -69,7 +69,7 @@ just set all uses as trusted (in the certificate manager). In N900 you
 must use command line tool cmcli (available in maemosec-certman-tools
 package) and install the root certificate into common-ca domain.
 
-The proxy server must be given a server sertificate (signed by the
+The proxy server must be given a server certificate (signed by the
 root certificate) and private key. The proxy reads them from
 cert/srv-{cert,priv}.pem files.
 
@@ -137,8 +137,8 @@ Then proceed with compiling this stuff
 
 == Fixing ASN specs ==
 
-There is a confict with NavigationModel which is defined by both supl
-and rrlp. Rename defination and every reference to NavigationModel
+There is a conflict with NavigationModel which is defined by both supl
+and rrlp. Rename definition and every reference to NavigationModel
 with XNavigationModel in src/supl-posinit.asn.
 
 
