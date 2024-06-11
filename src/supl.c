@@ -41,6 +41,12 @@ static struct supl_debug_s {
 } debug;
 #endif
 
+// quick hack around asn1c code generation
+#ifdef asn_debug_indent
+#undef asn_debug_indent
+#endif
+int asn_debug_indent = 0;
+
 static int server_connect(char *server);
 static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu);
 static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu);
@@ -316,8 +322,8 @@ static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu) {
 
   ulp->message.present = UlpMessage_PR_msSUPLSTART;
   ulp->message.choice.msSUPLSTART.sETCapabilities.posTechnology.agpsSETBased = 1;
-  // (void)asn_long2INTEGER(&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_noPreference);
-  (void)asn_long2INTEGER((INTEGER_t*)&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  // (void)asn_long2INTEGER((INTEGER_t*)&ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  ulp->message.choice.msSUPLSTART.sETCapabilities.prefMethod = PrefMethod_agpsSETBasedPreferred;
   ulp->message.choice.msSUPLSTART.sETCapabilities.posProtocol.rrlp = 1;
 
   if (ctx->p.set & PARAM_GSM_CELL_CURRENT) {
@@ -335,7 +341,8 @@ static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu) {
     ulp->message.choice.msSUPLSTART.locationId.cellInfo.choice.wcdmaCell.refUC = ctx->p.wcdma.uc;
   }
 
-  (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLSTART.locationId.status, Status_current);
+  // (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLSTART.locationId.status, Status_current);
+  ulp->message.choice.msSUPLSTART.locationId.status = Status_current;
 
   ulp->message.choice.msSUPLSTART.qoP = OPTIONAL_MISSING;
 
@@ -398,8 +405,8 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
 
   ulp->message.present = UlpMessage_PR_msSUPLPOSINIT;
   ulp->message.choice.msSUPLPOSINIT.sETCapabilities.posTechnology.agpsSETBased = 1;
-  // (void)asn_long2INTEGER(&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_noPreference);
-  (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  // (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod, PrefMethod_agpsSETBasedPreferred);
+  ulp->message.choice.msSUPLPOSINIT.sETCapabilities.prefMethod = PrefMethod_agpsSETBasedPreferred;
   ulp->message.choice.msSUPLPOSINIT.sETCapabilities.posProtocol.rrlp = 1;
 
   req_adata->acquisitionAssistanceRequested = 1; // 0
@@ -432,7 +439,8 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
     struct tm *tm;
     time_t t;
 
-    (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_stale);
+    // (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_stale);
+    ulp->message.choice.msSUPLPOSINIT.locationId.status = Status_stale;
 
     t = time(0);
     tm = gmtime(&t);
@@ -444,7 +452,8 @@ static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu) {
 
     ulp->message.choice.msSUPLPOSINIT.position = pos;
   } else {
-    (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_current);
+    // (void)asn_long2INTEGER((INTEGER_t *)&ulp->message.choice.msSUPLPOSINIT.locationId.status, Status_current);
+    ulp->message.choice.msSUPLPOSINIT.locationId.status = Status_current;
     ulp->message.choice.msSUPLPOSINIT.position = OPTIONAL_MISSING;
   }
 

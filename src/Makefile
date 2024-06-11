@@ -7,8 +7,10 @@ include $(TOP)/config.mk
 # as dpkg-buildpackage does export it.
 export CFLAGS
 
-CFLAGS += $(CONF_CFLAGS) $(CONF_SUPL_DEBUG)
+CFLAGS += $(CONF_CFLAGS) $(CONF_SUPL_DEBUG) $(OPENSSL_CFLAGS)
 CFLAGS += -I./asn-rrlp -I./asn-supl
+
+OPENSSL_LDFLAGS ?= $(shell pkg-config --libs openssl)
 
 SUPL_ASN1_SOURCE = supl-common.asn supl-end.asn supl-pos.asn supl-response.asn 
 SUPL_ASN1_SOURCE += supl-start.asn supl-ulp.asn supl-init.asn supl-posinit.asn
@@ -21,13 +23,13 @@ DIST = Makefile $(PROGRAM_SOURCE) $(SUPL_C_SOURCE) $(SUPL_ASN1_SOURCE) $(RRLP_AS
 all: supl-client supl-proxy supl-cert
 
 supl-client: libsupl.so supl-client.o
-	$(CC) -o $@ supl-client.o -L. -lsupl -lssl -lm
+	$(CC) -o $@ supl-client.o -L. -lsupl $(OPENSSL_LDFLAGS) -lm
 
 supl-proxy: libsupl.so supl-proxy.o
-	$(CC) -o $@ supl-proxy.o -L. -lsupl -lssl -lcrypto -lm
+	$(CC) -o $@ supl-proxy.o -L. -lsupl $(OPENSSL_LDFLAGS) -lm
 
 supl-cert: supl-cert.o
-	$(CC) -o $@ supl-cert.o $(shell pkg-config --libs openssl) -lm
+	$(CC) -o $@ supl-cert.o $(OPENSSL_LDFLAGS) -lm
 
 libsupl.so: libsupl.so.1.0
 	ln -sf libsupl.so.1 libsupl.so
@@ -35,7 +37,7 @@ libsupl.so: libsupl.so.1.0
 libsupl.so.1.0: asn-supl/libasnsupl.a asn-rrlp/libasnrrlp.a supl.o
 	$(CC) -shared -Wl,-soname,libsupl.so.1 -o $@ supl.o \
            -Wl,--whole-archive ./asn-supl/libasnsupl.a -Wl,--no-whole-archive \
-           ./asn-rrlp/libasnrrlp.a -lssl
+           ./asn-rrlp/libasnrrlp.a $(OPENSSL_LDFLAGS)
 	ln -sf libsupl.so.1.0 libsupl.so.1
 
 asn-supl/libasnsupl.a:
