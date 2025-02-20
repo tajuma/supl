@@ -263,17 +263,30 @@ static void usage(char *progname) {
   printf(usage_str, progname);
 }
 
+enum {
+        LONG_OPTS_CELL,
+        LONG_OPTS_DEBUG,
+        LONG_OPTS_FORMAT,
+        LONG_OPTS_TEST,
+        LONG_OPTS_SET_POS,
+        LONG_OPTS_POS_HELPER,
+        LONG_OPTS_DEBUG_FILE,
+        LONG_OPTS_HELP,
+        LONG_OPTS_ALMANAC,
+        LONG_OPTS_COUNT,
+};
+
 static struct option long_opts[] = {
-  { "cell", 1, 0, 0 },
-  { "debug", 1, 0, 'd' },
-  { "format", 1, 0, 'f' },
-  { "test", 1, 0, 't' },
-  { "set-pos", 1, 0, 0 },
-  { "pos-helper", 1, 0, 0 },
-  { "debug-file", 1, 0, 0 },
-  { "help", 0, 0, 'h' },
-  { "almanac", 0, 0, 'a' },
-  { 0, 0, 0 }
+  [LONG_OPTS_CELL] = { "cell", 1, 0, 0 },
+  [LONG_OPTS_DEBUG] = { "debug", 1, 0, 'd' },
+  [LONG_OPTS_FORMAT] = { "format", 1, 0, 'f' },
+  [LONG_OPTS_TEST] = { "test", 1, 0, 't' },
+  [LONG_OPTS_SET_POS] = { "set-pos", 1, 0, 0 },
+  [LONG_OPTS_POS_HELPER] = { "pos-helper", 1, 0, 0 },
+  [LONG_OPTS_DEBUG_FILE] = { "debug-file", 1, 0, 0 },
+  [LONG_OPTS_HELP] = { "help", 0, 0, 'h' },
+  [LONG_OPTS_ALMANAC] = { "almanac", 0, 0, 'a' },
+  [LONG_OPTS_COUNT] = { 0, 0, 0, 0 }
 };
 
 static int parse_fake_pos(char *str, struct fake_pos_s *fake_pos) {
@@ -316,7 +329,7 @@ int main(int argc, char *argv[]) {
     case 0:
       switch (opt_index) {
 
-      case 0: /* gsm/wcdma cell */
+      case LONG_OPTS_CELL: /* gsm/wcdma cell */
 	{	
 	  int mcc, mns, lac, ci, uc, uncertainty;
 	  double lat, lon;
@@ -343,17 +356,17 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "Ugh, cell\n");
 	break;
 
-      case 4: /* set-pos */
+      case LONG_OPTS_SET_POS: /* set-pos */
 	if (parse_fake_pos(optarg, &fake_pos)) {
 	  fprintf(stderr, "Ugh, set-pos\n");
 	}
 	break;
 
-      case 5: /* pos-helper */
+      case LONG_OPTS_POS_HELPER: /* pos-helper */
 
 	break;
 
-      case 6: /* debug-file */
+      case LONG_OPTS_DEBUG_FILE: /* debug-file */
 	debug_f = fopen(optarg, "w");
 	if (!debug_f) {
 	  fprintf(stderr, "Error: open debug file %s (%s)\n", optarg, strerror(errno));
