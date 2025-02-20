@@ -47,7 +47,7 @@ static struct supl_debug_s {
 #endif
 int asn_debug_indent = 0;
 
-static int server_connect(char *server);
+static int server_connect(char *server, unsigned int port);
 static int pdu_make_ulp_start(supl_ctx_t *ctx, supl_ulp_t *pdu);
 static int pdu_make_ulp_pos_init(supl_ctx_t *ctx, supl_ulp_t *pdu);
 static int pdu_make_ulp_rrlp_ack(supl_ctx_t *ctx, supl_ulp_t *pdu, PDU_t *rrlp);
@@ -227,7 +227,8 @@ int EXPORT supl_decode_rrlp(supl_ulp_t *ulp_pdu, PDU_t **ret_rrlp) {
   return E_SUPL_INTERNAL;
 }
   
-int EXPORT supl_server_connect(supl_ctx_t *ctx, char *server) {
+int EXPORT supl_server_connect(supl_ctx_t *ctx, char *server,
+                               unsigned int port) {
   int err;
   const SSL_METHOD *meth;
 
@@ -242,7 +243,7 @@ int EXPORT supl_server_connect(supl_ctx_t *ctx, char *server) {
   if (!ctx->ssl) return E_SUPL_CONNECT;
 
   if (server) {
-    ctx->fd = server_connect(server);
+    ctx->fd = server_connect(server, port);
     if (ctx->fd == -1) return E_SUPL_CONNECT;
   }
 
@@ -272,15 +273,18 @@ void EXPORT supl_close(supl_ctx_t *ctx) {
 }
 
 
-static int server_connect(char *server) {
+static int server_connect(char *server, unsigned int port) {
   int fd = -1;
   struct addrinfo *ailist, *aip;
   struct addrinfo hint;
   int err;
+  char portno[5];
 
   memset(&hint, 0, sizeof(struct addrinfo));
+  memset(portno, 0, sizeof(portno));
   hint.ai_socktype = SOCK_STREAM;
-  err = getaddrinfo(server, SUPL_PORT, &hint, &ailist);
+  sprintf(portno, "%d", port);
+  err = getaddrinfo(server, portno, &hint, &ailist);
   if (err != 0) {
     return -1;
   }
@@ -759,7 +763,8 @@ static int supl_more_rrlp(PDU_t *rrlp) {
 	  value == MoreAssDataToBeSent_moreMessagesOnTheWay);
 }
 
-int EXPORT supl_get_assist(supl_ctx_t *ctx, char *server, supl_assist_t *assist) {
+int EXPORT supl_get_assist(supl_ctx_t *ctx, char *server, unsigned int port,
+                           supl_assist_t *assist) {
   supl_ulp_t ulp;
 
   //  memcpy(ctx->p.msisdn, "\xde\xad\xbe\xef\xf0\x0b\xaa\x42", 8);
@@ -769,7 +774,7 @@ int EXPORT supl_get_assist(supl_ctx_t *ctx, char *server, supl_assist_t *assist)
   ** connect to server
   */
 
-  if (supl_server_connect(ctx, server) < 0) return E_SUPL_CONNECT;
+  if (supl_server_connect(ctx, server, port) < 0) return E_SUPL_CONNECT;
 
   /*
   ** send SUPL_START
