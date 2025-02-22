@@ -274,6 +274,7 @@ enum {
         LONG_OPTS_DEBUG_FILE,
         LONG_OPTS_HELP,
         LONG_OPTS_ALMANAC,
+	LONG_OPTS_PORT,
         LONG_OPTS_COUNT,
 };
 
