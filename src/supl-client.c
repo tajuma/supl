@@ -254,6 +254,7 @@ static char *usage_str =
 "  --format|-f human				machine parseable output\n"
 "  --debug|-d <n>				1 == RRLP, 2 == SUPL, 4 == DEBUG\n"
 "  --debug-file file				write debug to file\n"
+"  --port|-p port				remote server port number (7275 by default)\n"
 "  --help|-h					show this help\n"
 "Example:\n"
 "%1$s --cell=gsm:244,5:0x59e2,0x31b0:60.169995,24.939995,127 --cell=gsm:244,5:0x59e2,0x31b0\n"
@@ -286,6 +287,7 @@ static struct option long_opts[] = {
   [LONG_OPTS_DEBUG_FILE] = { "debug-file", 1, 0, 0 },
   [LONG_OPTS_HELP] = { "help", 0, 0, 'h' },
   [LONG_OPTS_ALMANAC] = { "almanac", 0, 0, 'a' },
+  [LONG_OPTS_PORT] = { "port", 1, 0, 0, 'p' },
   [LONG_OPTS_COUNT] = { 0, 0, 0, 0 }
 };
 
@@ -314,6 +316,7 @@ int main(int argc, char *argv[]) {
   int request = 0;
   supl_assist_t assist;
   char *server;
+  unsigned int port = SUPL_PORT;
   supl_ctx_t ctx;
 
   supl_ctx_new(&ctx);
@@ -323,7 +326,7 @@ int main(int argc, char *argv[]) {
     int opt_index;
     int c;
 
-    c = getopt_long(argc, argv, "ad:f:t:h", long_opts, &opt_index);
+    c = getopt_long(argc, argv, "ad:f:ht:p:", long_opts, &opt_index);
     if (c == -1) break;
     switch (c) {
     case 0:
@@ -422,6 +425,14 @@ int main(int argc, char *argv[]) {
       usage(argv[0]);
       exit(1);
 
+    case 'p':
+      port = atoi(optarg);
+      if (port == 0 || port > 65535) {
+        fprintf(stderr, "Ugh, invalid port\n");
+        exit(1);
+      }
+      break;
+
     default:
       usage(argv[0]);
       exit(1);
@@ -444,7 +455,7 @@ int main(int argc, char *argv[]) {
 
   supl_request(&ctx, request);
 
-  err = supl_get_assist(&ctx, server, &assist);
+  err = supl_get_assist(&ctx, server, port, &assist);
   if (err < 0) {
     fprintf(stderr, "SUPL protocol error %d\n", err);
     exit(1);

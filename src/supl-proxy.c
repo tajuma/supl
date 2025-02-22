@@ -20,8 +20,6 @@
 #include "supl.h"
 #include "asn-supl/ULP-PDU.h"
 
-#define SUPL_PORT "7275"
-
 /* Make these what you want for cert & key files */
 #define CERTF "srv-cert.pem"
 #define KEYF  "srv-priv.pem"
@@ -157,10 +155,18 @@ int main(int argc, char *argv[])
 {
   supl_ctx_t server_ctx;
   supl_ctx_t client_ctx;
+  unsigned int port = SUPL_PORT;
 
-  if (argc != 2) {
-    fprintf(stderr, "Usage: %s supl-server\n", argv[0]);
+  if (argc < 2 || argc > 3) {
+    fprintf(stderr, "Usage: %s supl-server [supl-port]\n", argv[0]);
     exit(1);
+  }
+  if (argc == 3) {
+    port = atoi(argv[2]);
+    if (port == 0 || port > 65535) {
+      fprintf(stderr, "Invalid port\n");
+      exit(1);
+    }
   }
 
   supl_set_debug(stderr, SUPL_DEBUG_DEBUG | SUPL_DEBUG_SUPL);
@@ -170,13 +176,13 @@ int main(int argc, char *argv[])
 
   /* get a client */
 
-  if (!ssl_accept(7275, &client_ctx)) {
+  if (!ssl_accept(port, &client_ctx)) {
     return 42;
   }
 
   /* connect to the server */
 
-  if (supl_server_connect(&server_ctx, argv[1]) < 0) {
+  if (supl_server_connect(&server_ctx, argv[1], port) < 0) {
     fprintf(stderr, "Error: Could not connect to server\n");
     return E_SUPL_CONNECT;
   }

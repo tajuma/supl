@@ -20,7 +20,7 @@
 #include <PDU.h>
 #include <ULP-PDU.h>
 
-#define SUPL_PORT "7275"
+#define SUPL_PORT 7275
 
 /* error messages */
 
@@ -216,7 +216,8 @@ void supl_set_server(supl_ctx_t *ctx, char *server);
 void supl_set_fd(supl_ctx_t *ctx, int fd);
 void supl_request(supl_ctx_t *ctx, int flags);
 
-int supl_get_assist(supl_ctx_t *ctx, char *server, supl_assist_t *assist);
+int supl_get_assist(supl_ctx_t *ctx, char *server, unsigned int port,
+                    supl_assist_t *assist);
 void supl_set_debug(FILE *log, int flags);
 
 /*
@@ -243,7 +244,7 @@ int supl_ulp_decode(supl_ulp_t *pdu);
 int supl_decode_rrlp(supl_ulp_t *pdu, PDU_t **rrlp);
 int supl_collect_rrlp(supl_assist_t *assist, PDU_t *rrlp, struct timeval *t);
 
-int supl_server_connect(supl_ctx_t *ctx, char *server);
+int supl_server_connect(supl_ctx_t *ctx, char *server, unsigned int port);
 void supl_close(supl_ctx_t *ctx);
 int supl_ulp_send(supl_ctx_t *ctx, supl_ulp_t *pdu);
 int supl_ulp_recv(supl_ctx_t *ctx, supl_ulp_t *pdu);
