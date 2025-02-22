@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
     int opt_index;
     int c;
 
-    c = getopt_long(argc, argv, "ad:f:t:", long_opts, &opt_index);
+    c = getopt_long(argc, argv, "ad:f:t:h", long_opts, &opt_index);
     if (c == -1) break;
     switch (c) {
     case 0:
