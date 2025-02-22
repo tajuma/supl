@@ -1,0 +1,12 @@
+src/asn-supl/*
+!src/asn-supl/Makefile
+!src/asn-supl/asn1c-files.tgz
+src/asn-rrlp/*
+!src/asn-rrlp/Makefile
+!src/asn-rrlp/asn1c-files.tgz
+src/*.o
+src/lib*.so*
+src/supl-client
+src/supl-proxy
+src/supl-cert
+
